@@ -1,3 +1,4 @@
-mock
 coverage
+mock
+nose
 timeout-decorator

@@ -27,3 +27,5 @@ classifiers = [
 "Bug Tracker" = "https://github.com/mellertson/gitrc/issues"
 
 
+[project.scripts]
+gitrc = "gitrc.__main__:main"

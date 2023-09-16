@@ -1,9 +1,13 @@
-from . import *
+from gitrc import GitRC
 
 
-if __name__ == "__main__":
+def main():
 	app = GitRC()
 	app.run()
+
+
+if __name__ == "__main__": # pragma: no cover
+	main()
 
 
 
