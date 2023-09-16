@@ -16,8 +16,8 @@ with open(filename, 'rt') as f:
 
 
 class GitHubCloneUrlMock(object):
-	def __init__(self, url):
-		self.url = url
+	def __init__(self, clone_url):
+		self.clone_url = clone_url
 
 
 class GitHub3Mock(object):

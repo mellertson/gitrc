@@ -93,7 +93,7 @@ class GitRC(object):
 			args.github_username,
 			type='owner',
 		):
-			sys.stdout.write(f'{r.url}\n')
+			sys.stdout.write(f'{r.clone_url}\n')
 			sys.stdout.flush()
 
 	def run(self):
