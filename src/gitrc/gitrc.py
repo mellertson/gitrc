@@ -34,8 +34,22 @@ class GitRC(object):
 			'--username',
 			required=False,
 			default=None,
-			help="Github username to authenticate with.  You will be prompted "
-				 "for your password.",
+			help="Github username to authenticate with.",
+		)
+		self.command_subparser.add_argument(
+			'--password',
+			required=False,
+			type=str,
+			default=None,
+			help="Github password to authenticate with.",
+		)
+		self.command_subparser.add_argument(
+			'-p',
+			required=False,
+			default=False,
+			action='store_true',
+			dest='output_prompt',
+			help="If set you will be prompted for a password.",
 		)
 		self.command_subparser.add_argument(
 			'--password_prompt',
@@ -66,10 +80,16 @@ class GitRC(object):
 		:returns: All repos for the given Github user account.
 		"""
 		if args.username is not None:
-			gh = github3.github.GitHub(
-				username=args.username,
-				password=input(args.password_prompt),
-			)
+			if args.output_prompt:
+				gh = github3.github.GitHub(
+					username=args.username,
+					password=input(args.password_prompt),
+				)
+			else:
+				gh = github3.github.GitHub(
+					username=args.username,
+					password=args.password,
+				)
 		else:
 			gh = github3.github.GitHub()
 		for r in gh.repositories_by(
@@ -78,9 +98,6 @@ class GitRC(object):
 		):
 			sys.stdout.write(f'{r.url}\n')
 			sys.stdout.flush()
-
-	def parse_github_repos_response(self, json_data):
-		return [repo['clone_url'] for repo in json_data]
 
 	def run(self):
 		args = self.parse_cmdl_args()
