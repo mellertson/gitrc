@@ -65,10 +65,7 @@ class GitRC(object):
 		self.args = None
 
 	def parse_cmdl_args(self, args=None):
-		if args:
-			self.args = self.parser.parse_args(args)
-		else:
-			self.args = self.parser.parse_args()
+		self.args = self.parser.parse_args(args)
 		return self.args
 
 	def download_cmd(self, args):

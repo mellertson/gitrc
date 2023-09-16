@@ -69,7 +69,6 @@ class DownloadCommand_WithPasswordPrompt_Tests(unittest.TestCase):
 		repositories_by.return_value = []
 		with patch('sys.stdout', new=StringIO()) as actual_output:
 			with patch('sys.stdin', new=StringIO(self.expected['password_prompt'])) as m_input:
-				# m_input.return_value = self.expected['password_prompt']
 
 				# test
 				result = self.gitrc.download_cmd(self.args)
@@ -86,6 +85,38 @@ class DownloadCommand_WithPasswordPrompt_Tests(unittest.TestCase):
 				)
 				self.assertTrue(self.gitrc.args.output_prompt)
 
+@mock.patch('github3.github.GitHub.repositories_by')
+class DownloadCommand_WithNoCredentials_Tests(unittest.TestCase):
+
+	def setUp(self) -> None:
+		super().setUp()
+		self.maxDiff = None
+		self.gitrc = GitRC()
+		self.expected = {
+			'password_prompt': 'Password: ',
+		}
+		self.args = self.gitrc.parse_cmdl_args([
+			'download', 'jasperfirecai2',
+		])
+
+	@timeout_decorator.timeout(1.0)
+	def test_should_do_x(self, repositories_by):
+		# setup
+		repositories_by.return_value = []
+		with patch('sys.stdout', new=StringIO()) as actual_output:
+			with patch('sys.stdin', new=StringIO(self.expected['password_prompt'])) as m_input:
+
+				# test
+				result = self.gitrc.download_cmd(self.args)
+
+				# verify
+				self.assertIsNone(result)
+				self.assertEquals('', actual_output.getvalue())
+				self.assertEquals(
+					self.expected['password_prompt'],
+					self.gitrc.args.password_prompt,
+				)
+				self.assertFalse(self.gitrc.args.output_prompt)
 
 
 
